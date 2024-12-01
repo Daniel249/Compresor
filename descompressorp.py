@@ -5,10 +5,10 @@ import time
 import sys
 
 def decompress_text_part(compressed_text, num_to_word):
-    # Replace numbers with corresponding words using the dictionary
+    # Reemplazar numeros con posiciones
     def replace_match(match):
         num = match.group(1)
-        return num_to_word.get(num, match.group(0))  # Replace if in the dictionary
+        return num_to_word.get(num, match.group(0))  #Devolver si ya esta en el diccionario
 
     decompressed_text = re.sub(r'\{(\d+)\}', replace_match, compressed_text)
     return decompressed_text
@@ -24,7 +24,7 @@ def main():
         exit()
 
     if rank == 0:
-        # Process 0: Read the dictionary and the compressed text
+        # Proceso 0: leer el diccionario y descomprimirlo
         input_file = 'comprimido.ec2'
         input_file = sys.argv[1]
         output_file = 'descomprimido-ec2.txt'
@@ -39,7 +39,7 @@ def main():
             encoding_used = 'windows-1252'
 
 
-        # Separate dictionary and compressed text
+        # Separar el diccionario del texto base
         parts = content.split('\n\n', 1)
         if len(parts) < 2:
             print("The input file is not in the expected format.")
@@ -48,34 +48,34 @@ def main():
         dictionary_part, compressed_text = parts
         dictionary_lines = dictionary_part.strip().split('\n')
 
-        # Create the dictionary from the text
+        # Crear un diccionario desde la base
         num_to_word = {}
         for line in dictionary_lines:
             if ':' in line:
                 num, word = line.split(':', 1)
                 num_to_word[num] = word
 
-        # Divide the compressed text into chunks for each worker
-        chunk_size = len(compressed_text) // (size - 1)  # excluding process 0
+        # Divide el espacio comprimido entre los trabajadores
+        chunk_size = len(compressed_text) // (size - 1)  # Excluye el proceso 0 
         for i in range(1, size):
             start = (i - 1) * chunk_size
-            end = i * chunk_size if i != size - 1 else len(compressed_text)  # last process takes the remainder
+            end = i * chunk_size if i != size - 1 else len(compressed_text)  # Ultimo proceso se lleva el remanente
             comm.send((num_to_word, compressed_text[start:end]), dest=i, tag=10 + i)
 
-        # Collect the decompressed text from all workers
+        # Guardar el archivo descomprimido de los trabajadores
         decompressed_text = ''
         for i in range(1, size):
             decompressed_part = comm.recv(source=i, tag=20 + i)
             decompressed_text += decompressed_part
 
-        # Save the decompressed text to the output file
+        # Guardar el archivo descomprimido:
         with open(output_file, 'w', encoding=encoding_used) as file:
             file.write(decompressed_text)
 
-        #print(f"Decompression complete. Output saved to {output_file}")
+        #print(f"Descompresion completa, el archivo es: {output_file}")
 
     else:
-        # Worker processes: Receive dictionary and text part, decompress, and send back
+        # Trabajo del proceso, recibe las palabras y las envia de vuelta
         num_to_word, text_part = comm.recv(source=0, tag=10 + rank)
         decompressed_text = decompress_text_part(text_part, num_to_word)
         comm.send(decompressed_text, dest=0, tag=20 + rank)
