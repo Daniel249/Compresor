@@ -20,9 +20,10 @@ def decompress_text(input_file, output_file):
         return
     
     dictionary_part, compressed_text = parts
+    # dictionary into array
     dictionary_lines = dictionary_part.strip().split('\n')
 
-    # Crear el diccionario a partir del texto
+    # generate dictionary from each entry in array
     num_to_word = {}
     for line in dictionary_lines:
         if ':' in line:
