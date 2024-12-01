@@ -3,7 +3,7 @@
 # second parameters is group id
 #!/bin/bash
 
-declare -a fileList=("text2.txt" "text3.txt" "text4.txt" "text5.txt")
+declare -a fileList=("text1.txt" "text2.txt" "text3.txt" "text4.txt" "text5.txt")
 
 for fileName in ${fileList[@]}; do
    cp -f $fileName $1
