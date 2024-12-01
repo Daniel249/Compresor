@@ -2,6 +2,7 @@
 import re
 from collections import Counter
 import sys
+import time
 
 def compact_dict_keys(input_dict, start_from=0):
     return {new_key: value for new_key, (_, value) in enumerate(input_dict.items(), start=start_from)}
@@ -42,4 +43,8 @@ def compress_text(input_file, output_file):
 #input_file = 'text1.txt'  # Reemplazar con el archivo de entrada
 output_file = 'comprimido.ec2'  # El archivo comprimido de salida
 input_file = sys.argv[1]
+start_time = time.time()
 compress_text(input_file, output_file)
+end_time = time.time()
+execution_time = end_time - start_time
+print(f"Tiempo de ejecución: {execution_time:.2f} segundos")
