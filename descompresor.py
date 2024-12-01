@@ -42,8 +42,8 @@ def decompress_text(input_file, output_file):
         file.write(decompressed_text)
 
 # Usar el código con el archivo de entrada y salida
-input_file = 'comprimido.ec2'  # Reemplazar con el archivo comprimido
-#input_file = sys.argv[1]
+#input_file = 'comprimido.ec2'  # Reemplazar con el archivo comprimido
+input_file = sys.argv[1]
 output_file = 'descomprimido-ec2.txt'  # El archivo descomprimido de salida
 start_time = time.time()
 decompress_text(input_file, output_file)
