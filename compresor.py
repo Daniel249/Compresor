@@ -15,16 +15,16 @@ def compress_text(input_file, output_file):
             text = f.read()
         encoding_used = 'utf-8'
     except UnicodeDecodeError:
-        # If reading as UTF-8 fails, fall back to Windows-1252 (ANSI)
+        # Si leer en  UTF-8 fails, intentar Windows-1252 (ANSI)
         with open(input_file, 'r', encoding='windows-1252') as f:
             text = f.read()
         encoding_used = 'windows-1252'
     # encontrar todas las palabras en un array
     sequences = re.findall(r'(?<!\w)\w+(?!\w)', text)
-    # remove short words
+    # quitar palabras cortas
     sequences = [seq for seq in sequences if len(seq) >= 6 and '<' not in seq]
     sequence_counts = Counter(sequences)
-    # create dictionary 
+    # Crear el diccionario
     frequent_sequences = {seq: count for seq, count in sequence_counts.items() if count >= 5}
     compacted_frequent_sequences = {seq: i for i, seq in enumerate(frequent_sequences.keys())}
     dictionary = '\n'.join([f'{num}:{seq}' for seq, num in compacted_frequent_sequences.items()])
