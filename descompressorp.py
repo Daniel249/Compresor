@@ -25,9 +25,9 @@ def main():
 
     if rank == 0:
         # Proceso 0: leer el diccionario y descomprimirlo
-        input_file = 'comprimido.ec2'
+        #input_file = 'comprimido.ec2'
         input_file = sys.argv[1]
-        output_file = 'descomprimido-ec2.txt'
+        output_file = 'descomprimidop-ec2.txt'
 
         try:
             with open(input_file, 'r', encoding='utf-8') as file:

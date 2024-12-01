@@ -43,7 +43,7 @@ def main():
     if rank == 0:
         # Proceso 0: lee el texto y establece un dicionario
         start_time = time.time()
-        input_file = 'LaBiblia.txt'
+        #input_file = 'LaBiblia.txt'
         input_file = sys.argv[1]
         try:
             with open(input_file, 'r', encoding='utf-8') as file:
@@ -74,7 +74,7 @@ def main():
         combined_text = ''.join(processed_chunks)
 
         # Escribir la salida final
-        output_file = 'comprimido.ec2'
+        output_file = 'comprimidop.ec2'
         with open(output_file, 'w', encoding=encoding_used) as file:
             file.write('\n'.join(f'{num}:{word}' for word, num in dictionary.items()) + '\n\n')
             file.write(combined_text)
