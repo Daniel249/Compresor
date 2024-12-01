@@ -8,7 +8,7 @@ def decompress_text(input_file, output_file):
             content = f.read()
         encoding_used = 'utf-8'
     except UnicodeDecodeError:
-        # If reading as UTF-8 fails, fall back to Windows-1252 (ANSI)
+        # Si leer en  UTF-8 fails, intentar Windows-1252 (ANSI)
         with open(input_file, 'r', encoding='windows-1252') as f:
             content = f.read()
         encoding_used = 'windows-1252'
@@ -20,10 +20,10 @@ def decompress_text(input_file, output_file):
         return
     
     dictionary_part, compressed_text = parts
-    # dictionary into array
+    # Diccionario hacia arreglo
     dictionary_lines = dictionary_part.strip().split('\n')
 
-    # generate dictionary from each entry in array
+    # Generar diccionario por cada entrada dentro de un arreglo o vector
     num_to_word = {}
     for line in dictionary_lines:
         if ':' in line:
